@@ -1,0 +1,20 @@
+CREATE TABLE `jianshu`.`article` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `article_id` INT NULL,
+  `article_slug` VARCHAR(100) NULL,
+  `title` VARCHAR(1024) NULL,
+  `text` TEXT NULL,
+  `wordage` INT NULL,
+  `views_count` INT NULL,
+  `comments_count` INT NULL,
+  `likes_count` INT NULL,
+  `rewards_total_count` INT NULL,
+  `author_id` INT NULL,
+  `author_nickname` VARCHAR(100) NULL,
+  `author_slug` VARCHAR(100) NULL,
+  `author_public_notes_count` INT NULL,
+  `authot_followers_count` INT NULL,
+  `author_total_likes_count` INT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
