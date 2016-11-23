@@ -20,6 +20,9 @@ public class Article {
     private int comments_count;
     private int likes_count;
     private int rewards_total_count = 0;
+    private String article_time;
+    private String group;
+    private String currentGroup;
 
     public void setAuthor_id(int author_id) {
         this.author_id = author_id;
@@ -131,5 +134,37 @@ public class Article {
 
     public void setRewards_total_count(int rewards_total_count) {
         this.rewards_total_count = rewards_total_count;
+    }
+
+    public int getAuthor_id() {
+        return author_id;
+    }
+
+    public String getArticle_time() {
+        return article_time;
+    }
+
+    public void setArticle_time(String article_time) {
+        this.article_time = article_time;
+    }
+
+    public String getAuthor_slug() {
+        return author_slug;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(String currentGroup) {
+        this.currentGroup = currentGroup;
     }
 }

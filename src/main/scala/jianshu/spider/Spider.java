@@ -33,6 +33,10 @@ public class Spider {
 
     private static String article_url = "<h4 class=\"title\"><a target=\"_blank\" href=\"(.*?)\">.*?</a></h4>";
 
+    private static String time = "<a class=\"author-name blue-link\" href=\"/users/.*?\">(.*?)<h1 class=\"title\">";
+
+    static Pattern p_html = Pattern.compile(regEx_html,Pattern.CASE_INSENSITIVE);
+
     public static List<String> getArticleUrl(String url) throws IOException{
 
         List<String> url_list = new ArrayList<String>();
@@ -57,9 +61,29 @@ public class Spider {
         HttpEntity entity = res.getEntity();
         responseContent = EntityUtils.toString(entity, "UTF-8");
 
+        Article a = new Article();
+
+        //获取时间
+        String date = responseContent.split("<a class=\"author-name blue-link\"")[1].split("</span>")[1];
+        Matcher m_html_time = p_html.matcher(date);
+        date = m_html_time.replaceAll("").replace(".","-").replace("*",""); //过滤html标签
+        System.out.println(date.trim());
+
+        a.setArticle_time(date.trim());
+
+        //获取社群
+        String group = responseContent.split("<ul id=\"all-collections\"")[1].split("</ul>")[0];
+        String[] h5Split = group.split("<h5>");
+        String groupRes = "";
+        for(int i = 1 ; i < h5Split.length ; i++){
+            groupRes += p_html.matcher(h5Split[i].split("</h5>")[0]).replaceAll("").trim() + "@@@###";
+        }
+        System.out.println(groupRes);
+        a.setGroup(groupRes);
+
+        //获取json
         String article_json = responseContent.split("<script type='application/json' data-name='note'>")[1].split("<script type='application/json' data-name='uuid'>")[0].split("</script>")[0].trim();
         JsonObject articleObj = jsonparer.parse(article_json).getAsJsonObject();
-        Article a = new Article();
         if(articleObj.has("id")){
             a.setArticle_id(articleObj.get("id").getAsInt());
         }
@@ -70,7 +94,7 @@ public class Spider {
             a.setViews_count(articleObj.get("views_count").getAsInt());
         }
         if(articleObj.has("wordage")){
-            a.setWordage(articleObj.get("views_count").getAsInt());
+            a.setWordage(articleObj.get("wordage").getAsInt());
         }
         if(articleObj.has("likes_count")){
             a.setLikes_count(articleObj.get("likes_count").getAsInt());
@@ -116,9 +140,10 @@ public class Spider {
 
 
     public static void main(String[] args) throws IOException{
-        String url = "http://www.jianshu.com/collections/219/notes?order_by=added_at&page=";
+        String url = "http://www.jianshu.com/collections/16/notes?order_by=added_at&page=";
         String sql = "";
-        for(int i = 5 ; i < 10 ; i++){//页数
+        String currentGroup = "程序员";
+        for(int i = 1 ; i < 10 ; i++){//页数
             System.out.println("page:" + i);
             List<String> url_list = Spider.getArticleUrl(url + i);
             for(int j = 0 ; j < url_list.size() ; j++){
@@ -129,7 +154,7 @@ public class Spider {
                 }
                 Article arti = parseArticle("http://www.jianshu.com" + url_list.get(j));
                 System.out.println(arti.getTitle());
-                sql = "insert into article (`article_id`, `article_slug`, `title`, `text`, `wordage`, `views_count`, `comments_count`, `likes_count`, `rewards_total_count`, `author_id`, `author_nickname`, `author_slug`, `author_public_notes_count`, `author_followers_count`, `author_total_likes_count`) VALUES ('" + arti.getArticle_id() + "', '" + arti.getArticle_slug() + "', '" + arti.getTitle() + "', '" + arti.getText() + "', '" + arti.getWordage() + "', '" + arti.getViews_count() + "', '" + arti.getComments_count() + "', '" + arti.getLikes_count() + "', '" + arti.getRewards_total_count() + "', '" + arti.getArticle_id() + "', '" + arti.getAuthor_nickname() + "', '" + arti.getArticle_slug() + "', '" + arti.getAuthor_public_notes_count() + "', '" + arti.getAuthor_followers_count() + "', '" + arti.getAuthor_total_likes_count() + "')";
+                sql = "insert into article (`article_id`, `article_slug`, `title`, `text`, `wordage`, `views_count`, `comments_count`, `likes_count`, `rewards_total_count`, `author_id`, `author_nickname`, `author_slug`, `author_public_notes_count`, `author_followers_count`, `author_total_likes_count`, `article_time`, `group`, `current_group`) VALUES ('" + arti.getArticle_id() + "', '" + arti.getArticle_slug() + "', '" + arti.getTitle() + "', '" + arti.getText() + "', '" + arti.getWordage() + "', '" + arti.getViews_count() + "', '" + arti.getComments_count() + "', '" + arti.getLikes_count() + "', '" + arti.getRewards_total_count() + "', '" + arti.getAuthor_id() + "', '" + arti.getAuthor_nickname() + "', '" + arti.getAuthor_slug() + "', '" + arti.getAuthor_public_notes_count() + "', '" + arti.getAuthor_followers_count() + "', '" + arti.getAuthor_total_likes_count() + "', '" + arti.getArticle_time() + "', '" + arti.getGroup() + "', '" + currentGroup + "')";
                 db.add(sql);
             }
         }
