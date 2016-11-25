@@ -6,9 +6,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import util.Jdbc_Util;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class ShopName {
 
     //工具类
     private static HttpClient client = new DefaultHttpClient();//httpclient
-    private static Jdbc_Util db = new Jdbc_Util();//数据库操作类
+    //private static Jdbc_Util db = new Jdbc_Util();//数据库操作类
 
     public static List<String> getName(String url) throws IOException{
         List<String> namelist = new ArrayList<String>();
@@ -41,24 +40,26 @@ public class ShopName {
 
 
     public static void main(String[] args) throws IOException{
-        String base_url = "http://www.dianping.com/search/category/7/50/g157p";
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("wdSZ.txt")),"utf-8"));
+        String base_url = "http://www.dianping.com/search/category/7/45/g149p";
         List<String> resultList;
-        String sql = "";
+        //String sql = "";
         String province = "深圳";
-        for(int i = 1 ; i <= 50 ; i++){
+        String category = "舞蹈";
+        for(int i = 1 ; i <= 9 ; i++){
             System.out.println("第" + i + "页");
             try{
                 Thread.sleep(500);
             }catch(Exception e){
                 e.printStackTrace();
             }
-            resultList = getName(base_url + i);
+            resultList = getName(base_url + i + "m3");
             for(int j = 0 ; j < resultList.size() ; j++){
-                sql = "insert into dianping (`name`,`province`) values ('" + resultList.get(j) + "', '" + province + "')";
-                db.add(sql);
+                bw.write(resultList.get(j) + "\t" + province + "\t" + category + "\n");
+                //sql = "insert into dianping (`name`,`province`) values ('" + resultList.get(j) + "', '" + province + "')";
+                //db.add(sql);
             }
-
         }
-
+        bw.close();
     }
 }
