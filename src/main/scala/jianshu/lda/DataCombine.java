@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class DataCombine {
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("userFeatures.txt")), "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("userFeatures_game.txt")), "UTF-8"));
         BufferedReader br1 = new BufferedReader(new InputStreamReader(new FileInputStream(new File("userIds.txt")), "UTF-8"));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userFeatures1.txt")), "utf-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userFeatures1_game.txt")), "utf-8"));
 
         String line = "";
         List<String> l = new ArrayList<String>();

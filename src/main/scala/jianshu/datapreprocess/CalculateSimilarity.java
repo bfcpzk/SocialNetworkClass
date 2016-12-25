@@ -25,8 +25,8 @@ public class CalculateSimilarity {
     }
 
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("userFeatures1.txt")), "utf-8"));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userSimilarityTotal.txt")),"utf-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("userFeatures_game.txt")), "utf-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userSimilarityTotal_game.txt")),"utf-8"));
         String line = "";
 
         while((line = br.readLine()) != null){

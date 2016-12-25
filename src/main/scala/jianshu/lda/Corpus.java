@@ -115,10 +115,12 @@ public class Corpus
     {
         Corpus corpus = new Corpus();
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userIds.txt")),"utf-8"));
         String line;
         while ((line = br.readLine()) != null)
         {
             if(line.split("\t").length == 2 && isNumeric(line.split("\t")[0])){
+                bw.write(line.split("\t")[0] + "\n");
                 line = line.split("\t")[1];
                 List<String> wordList = new LinkedList<String>();
                 String[] words = line.split(",");
@@ -131,6 +133,7 @@ public class Corpus
             }
         }
         br.close();
+        bw.close();
         if (corpus.getVocabularySize() == 0) return null;
         return corpus;
     }

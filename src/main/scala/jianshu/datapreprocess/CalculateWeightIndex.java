@@ -35,10 +35,9 @@ public class CalculateWeightIndex {
     static Map<String, Parameter> userMap = new HashMap<String, Parameter>();
     static String targetTime = "2016-11-25 00:00:00";
 
-
-
     public static void main(String[] args) throws SQLException, ParseException, IOException{
-        String sql = "select author_id, views_count, comments_count, likes_count, rewards_total_count, author_public_notes_count, author_followers_count, author_total_likes_count, article_time from article";
+        String current_group = "电竞·游戏";
+        String sql = "select author_id, views_count, comments_count, likes_count, rewards_total_count, author_public_notes_count, author_followers_count, author_total_likes_count, article_time from article where current_group='" + current_group + "'";
         ResultSet rs = db.select(sql);
 
         while (rs.next()){
@@ -81,7 +80,7 @@ public class CalculateWeightIndex {
             }
         }
 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userIndex.txt")), "utf-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userIndex_game.txt")), "utf-8"));
 
         for(Object key : userMap.keySet()){
             Parameter p = userMap.get(key);

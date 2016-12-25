@@ -21,7 +21,7 @@ public class KeyWordExtract {
     static Map<String, String> author_article = new HashMap<String, String>();
 
     public static void main(String[] args) throws SQLException, IOException{
-        String sql = "select author_id, text from article";
+        String sql = "select author_id, text from article where current_group='电竞·游戏'";
         String line = "";
         ResultSet rs;
         rs = db.select(sql);
@@ -38,7 +38,7 @@ public class KeyWordExtract {
             }
         }
         int count = 0;
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("author_keyword.txt")), "utf-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("author_keyword_game.txt")), "utf-8"));
         for(Object key : author_article.keySet()){
             count++;
             String text = author_article.get(key);

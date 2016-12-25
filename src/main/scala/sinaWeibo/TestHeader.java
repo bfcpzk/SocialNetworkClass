@@ -1,5 +1,7 @@
 package sinaWeibo;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -18,9 +20,25 @@ public class TestHeader {
 
     public static void getByTime(){}
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException,ParseException{
 
-        String keyword = "房地产";
+        String url = "https://p.3.cn/prices/mgets?callback=jQuery353071&type=1&area=1_72_2799_0&pdtk=&pduid=1258239888&pdpin=&pdbp=0&skuIds=J_3158054";
+        HttpGet get = new HttpGet(url);
+        HttpResponse res = client.execute(get);
+        String responseContent = null; // 响应内容
+        HttpEntity entity = res.getEntity();
+        responseContent = EntityUtils.toString(entity, "UTF-8");
+        System.out.println(responseContent);
+        String json = responseContent.split("\\[")[1].split("\\]")[0];
+        System.out.println(json);
+        JsonParser jsonparer = new JsonParser();// 初始化解析json格式的对象
+        JsonObject jo = jsonparer.parse(json).getAsJsonObject();
+        String id = jo.get("id").getAsString();
+        String p = jo.get("p").getAsString();
+        String m = jo.get("m").getAsString();
+        String op = jo.get("op").getAsString();
+        System.out.println("id:" + id + " p:" + p + " m:" + m + " op:" + op);
+        /* String keyword = "房地产";
         String startTime = "2016-11-08";
         String endTime = "2016-11-18";
         String url = "http://s.weibo.com/weibo/" + keyword + "&timescope=custom:" + startTime + ":" + endTime + "&page=";
@@ -44,6 +62,6 @@ public class TestHeader {
             responseContent = EntityUtils.toString(entity, "UTF-8");
             System.out.println("page:" + i);
             System.out.println(responseContent);
-        }
+        }*/
     }
 }

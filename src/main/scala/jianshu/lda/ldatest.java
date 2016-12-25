@@ -1,8 +1,6 @@
 package jianshu.lda;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -12,7 +10,7 @@ public class ldatest {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		// 1. Load corpus from disk
-		Corpus corpus = Corpus.load_file("author_keyword.txt");
+		Corpus corpus = Corpus.load_file("author_keyword_game.txt");
 		//Corpus corpus = Corpus.load("data/mini");
 		// 2. Create a LDA sampler
 		LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), corpus.getVocabularySize());
@@ -24,7 +22,7 @@ public class ldatest {
 		LdaUtil.explain(topicMap);
 		double[][] theta = ldaGibbsSampler.getTheta();
 
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userFeatures.txt")), "utf-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("userFeatures_game.txt")), "utf-8"));
 
 		for(int i = 0 ; i < theta.length ; i++){
 			//bw.write(l.get(i) + ",");

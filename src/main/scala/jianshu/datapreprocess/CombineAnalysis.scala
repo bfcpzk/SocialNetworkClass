@@ -18,12 +18,12 @@ object CombineAnalysis {
     val conf = new SparkConf().setAppName("CombineAnalysis").setMaster("local")
     val sc = new SparkContext(conf)
 
-    val userIntensity = sc.textFile("userSimilarityTotal.txt").map(l => {
+    val userIntensity = sc.textFile("userSimilarityTotal_game.txt").map(l => {
       val p = l.split("\t")
       (p(0), p(1).toDouble)
     })
 
-    val userParam = sc.textFile("userIndex.txt").map(l => {
+    val userParam = sc.textFile("userIndex_game.txt").map(l => {
       val p = l.split("\t")
       val param = new Parameter
       val author_id = p(0)
@@ -38,6 +38,6 @@ object CombineAnalysis {
     })
 
     userIntensity.leftOuterJoin(userParam).map(l => (l._1, (l._2._1, l._2._2.getOrElse(new Parameter))))
-      .map(l => l._1 + "\t" + l._2._1 + "\t" + l._2._2.viewCount).repartition(1).saveAsTextFile("viewCount")
+      .map(l => l._1 + "\t" + l._2._1 + "\t" + l._2._2.viewCount).repartition(1).saveAsTextFile("viewCount_game")
   }
 }
